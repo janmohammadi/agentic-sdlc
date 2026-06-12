@@ -1,0 +1,326 @@
+/* =============================================================================
+   AGENTIC SDLC — rendering. Infrastructure: you should never need to edit
+   this file to add content; edit data.js instead.
+   ========================================================================== */
+(function () {
+  const { html, render, useState, useEffect } = window.htmPreact;
+  const DATA = window.SDLC_DATA;
+
+  marked.use({
+    renderer: {
+      link(href, title, text) {
+        return `<a href="${href}" target="_blank" rel="noopener"${title ? ` title="${title}"` : ""}>${text}</a>`;
+      },
+    },
+  });
+
+  const FACETS = [
+    { key: "opportunities", label: "Opportunities", desc: "what agents can do here" },
+    { key: "risks", label: "Risks", desc: "what goes wrong at machine speed" },
+    { key: "feedforward", label: "Feed-forward", desc: "context, skills & MCPs the agent needs" },
+    { key: "guardrails", label: "Guardrails", desc: "deterministic gates & human checkpoints" },
+  ];
+
+  /* ------------------------------------------------------------ routing */
+  function parseHash() {
+    const h = location.hash.replace(/^#\/?/, "");
+    const [a, b, c] = h.split("/").filter(Boolean);
+    if (a === "principles") return { view: "principles" };
+    if (a === "stage" && b) return { view: "stage", stage: b, facet: c || null };
+    return { view: "home" };
+  }
+
+  function useRoute() {
+    const [route, setRoute] = useState(parseHash());
+    useEffect(() => {
+      const fn = () => setRoute(parseHash());
+      window.addEventListener("hashchange", fn);
+      return () => window.removeEventListener("hashchange", fn);
+    }, []);
+    return route;
+  }
+
+  /* ----------------------------------------------------------- markdown */
+  function Md({ src }) {
+    if (!src) return null;
+    return html`<div class="md" dangerouslySetInnerHTML=${{ __html: marked.parse(src) }} />`;
+  }
+
+  /* -------------------------------------------------------------- blocks */
+  function Block({ block }) {
+    if (block.type === "links") {
+      return html`<div class="block-links">
+        ${block.items.map((it) => html`<a href=${it.url} target="_blank" rel="noopener">${it.label}</a>`)}
+      </div>`;
+    }
+    if (block.type === "html") {
+      return html`<div dangerouslySetInnerHTML=${{ __html: block.html }} />`;
+    }
+    return null;
+  }
+
+  /* ------------------------------------------------------ recursive node */
+  function Node({ node, depth = 0 }) {
+    const [open, setOpen] = useState(false);
+    const expandable = node.body || (node.children && node.children.length) || (node.blocks && node.blocks.length);
+    const draft = node.tags && node.tags.source === "draft";
+    return html`<div class="node ${open ? "open" : ""}">
+      <button class="node-row" onClick=${() => expandable && setOpen(!open)}>
+        <span class="tw">${expandable ? "▸" : "·"}</span>
+        <span class="t">${node.title}</span>
+        ${draft && html`<span class="badge-draft" title="AI-drafted seed — not yet endorsed">draft</span>`}
+      </button>
+      ${open &&
+      html`<div class="node-body">
+        <${Md} src=${node.body} />
+        ${(node.blocks || []).map((b) => html`<${Block} block=${b} />`)}
+        ${node.children && node.children.length
+          ? html`<div class="children">${node.children.map((c) => html`<${Node} node=${c} depth=${depth + 1} />`)}</div>`
+          : null}
+      </div>`}
+    </div>`;
+  }
+
+  /* --------------------------------------------------------------- wheel */
+  const TAU = Math.PI * 2;
+  function pt(cx, cy, r, deg) {
+    const a = (deg * TAU) / 360;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  }
+  function donutSeg(cx, cy, r1, r2, a0, a1) {
+    const [x0o, y0o] = pt(cx, cy, r2, a0);
+    const [x1o, y1o] = pt(cx, cy, r2, a1);
+    const [x0i, y0i] = pt(cx, cy, r1, a0);
+    const [x1i, y1i] = pt(cx, cy, r1, a1);
+    const large = a1 - a0 > 180 ? 1 : 0;
+    return `M ${x0o} ${y0o} A ${r2} ${r2} 0 ${large} 1 ${x1o} ${y1o} L ${x1i} ${y1i} A ${r1} ${r1} 0 ${large} 0 ${x0i} ${y0i} Z`;
+  }
+  function arcPath(cx, cy, r, a0, a1) {
+    const [x0, y0] = pt(cx, cy, r, a0);
+    const [x1, y1] = pt(cx, cy, r, a1);
+    const large = a1 - a0 > 180 ? 1 : 0;
+    return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
+  }
+
+  function Wheel({ activeStage, mini = false }) {
+    const S = 760;
+    const cx = S / 2, cy = S / 2 + 10;
+    const r1 = 218, r2 = 312;
+    const gap = 3.2; // degrees of breathing room between segments
+    const n = DATA.stages.length;
+    const step = 360 / n;
+    const go = (h) => (location.hash = h);
+
+    const segs = DATA.stages.map((st, i) => {
+      const a0 = -90 + i * step + gap;
+      const a1 = -90 + (i + 1) * step - gap;
+      const mid = (a0 + a1) / 2;
+      const rm = (r1 + r2) / 2;
+      const [lx, ly] = pt(cx, cy, rm, mid);
+      const active = activeStage === st.id;
+      return html`<g
+        class="seg ${active ? "active" : ""}"
+        onClick=${() => go(`#/stage/${st.id}`)}
+        tabindex="0"
+        role="button"
+        aria-label=${st.name}
+      >
+        <path class="arc" d=${donutSeg(cx, cy, r1, r2, a0, a1)} />
+        <text class="num" x=${lx} y=${ly - 26} text-anchor="middle">0${i + 1}</text>
+        <text class="lbl" x=${lx} y=${ly + 1} text-anchor="middle">${st.short}</text>
+        ${!mini &&
+        html`<text class="sub" x=${lx} y=${ly + 22} text-anchor="middle">
+          ${st.name !== st.short ? st.name.replace(`${st.short} & `, "& ") : ""}
+        </text>`}
+      </g>`;
+    });
+
+    // small clockwise flow ticks between segments (lifecycle direction)
+    const flows = DATA.stages.map((_, i) => {
+      const a = -90 + (i + 1) * step;
+      return html`<path class="flow" d=${arcPath(cx, cy, (r1 + r2) / 2, a - gap + 1.4, a + gap - 1.4)} />`;
+    });
+
+    // amber feedback arc: Operations (last segment mid) back over the top to Analysis (first segment mid)
+    const fbR = r2 + 26;
+    const fbA0 = -90 + (n - 0.5) * step + 6; // mid of last segment
+    const fbA1 = -90 + 0.5 * step - 6 + 360; // mid of first segment, next turn
+    const fb = arcPath(cx, cy, fbR, fbA0, fbA1);
+    const [flx, fly] = pt(cx, cy, fbR + 18, -90);
+
+    return html`<svg class="wheel ${mini ? "mini" : ""}" viewBox="0 0 ${S} ${S + 10}" aria-label="SDLC wheel">
+      <defs>
+        <marker id="fbArrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L8,4 L0,8 z" fill="var(--amber)" />
+        </marker>
+        <marker id="flowArrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L8,4 L0,8 z" fill="rgba(140,170,210,0.5)" />
+        </marker>
+        <radialGradient id="hubGlow">
+          <stop offset="55%" stop-color="rgba(25,200,230,0)" />
+          <stop offset="100%" stop-color="rgba(25,200,230,0.14)" />
+        </radialGradient>
+      </defs>
+      <circle class="ring-guide" cx=${cx} cy=${cy} r=${r1 - 14} />
+      <circle class="ring-guide" cx=${cx} cy=${cy} r=${r2 + 14} />
+      ${flows}
+      ${segs}
+      <path class="feedback-arc" d=${fb} />
+      ${!mini && html`<text class="feedback-lbl" x=${flx} y=${fly - 2} text-anchor="middle">continuous feedback</text>`}
+      <g
+        class="hub ${activeStage === "__principles" ? "active" : ""}"
+        onClick=${() => go("#/principles")}
+        tabindex="0"
+        role="button"
+        aria-label="Principles"
+      >
+        <circle class="core" cx=${cx} cy=${cy} r=${r1 - 44} />
+        <circle class="glow" cx=${cx} cy=${cy} r=${r1 - 45} fill="url(#hubGlow)" />
+        <text class="hub-kicker" x=${cx} y=${cy - 28} text-anchor="middle">THE HUB</text>
+        <text class="hub-title" x=${cx} y=${cy + 2} text-anchor="middle">Principles</text>
+        ${!mini &&
+        html`<text class="hub-sub" x=${cx} y=${cy + 26} text-anchor="middle">
+          what holds on every stage
+        </text>`}
+      </g>
+    </svg>`;
+  }
+
+  /* -------------------------------------------------------------- topbar */
+  function Topbar() {
+    return html`<header class="topbar">
+      <div class="brand" onClick=${() => (location.hash = "#/")}>
+        <h1>${DATA.meta.title}</h1>
+        <span class="version">v${DATA.meta.version}</span>
+      </div>
+      <div class="org">${DATA.meta.org}</div>
+    </header>`;
+  }
+
+  /* ------------------------------------------------------------- sidebar */
+  function Sidebar({ route }) {
+    return html`<aside class="sidebar">
+      <div class="mini-wheel">
+        <${Wheel} mini activeStage=${route.view === "principles" ? "__principles" : route.stage} />
+      </div>
+      <nav>
+        <a href="#/" class=${route.view === "home" ? "active" : ""}><span class="n">⌂</span> Overview</a>
+        <a href="#/principles" class=${route.view === "principles" ? "active" : ""}><span class="n">◉</span> Principles</a>
+        <div class="sep"></div>
+        ${DATA.stages.map(
+          (st, i) =>
+            html`<a href="#/stage/${st.id}" class=${route.stage === st.id ? "active" : ""}>
+              <span class="n">0${i + 1}</span> ${st.name}
+            </a>`
+        )}
+      </nav>
+    </aside>`;
+  }
+
+  /* ----------------------------------------------------------- stage view */
+  function StagePanel({ stage, idx, facetFocus }) {
+    useEffect(() => {
+      if (facetFocus) {
+        const el = document.getElementById(`facet-${facetFocus}`);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }, [stage.id, facetFocus]);
+
+    return html`<main class="panel">
+      <div class="crumb"><a href="#/">SDLC</a> / stage 0${idx + 1}</div>
+      <div class="stage-head">
+        <div class="stage-num">STAGE 0${idx + 1} / 06</div>
+        <h2>${stage.name}</h2>
+        <p class="tagline">${stage.tagline}</p>
+      </div>
+      <div class="principle-quote">
+        <span class="pq-kicker">stage principle</span>
+        ${stage.principle}
+      </div>
+      <div class="chips">${(stage.outcomes || []).map((o) => html`<span class="chip">${o}</span>`)}</div>
+
+      <div class="facet-nav">
+        ${FACETS.map(
+          (f) =>
+            html`<a
+              href="#/stage/${stage.id}/${f.key}"
+              data-facet=${f.key}
+              class=${facetFocus === f.key ? "active" : ""}
+              >${f.label}</a
+            >`
+        )}
+      </div>
+
+      ${FACETS.map((f) => {
+        const nodes = (stage.facets && stage.facets[f.key]) || [];
+        return html`<section class="facet" data-facet=${f.key} id="facet-${f.key}">
+          <div class="facet-head">
+            <span class="f-mark"></span>
+            <h3>${f.label}</h3>
+            <span class="f-desc">${f.desc}</span>
+            <span class="f-count">${nodes.length}</span>
+          </div>
+          ${nodes.map((nd) => html`<${Node} node=${nd} />`)}
+        </section>`;
+      })}
+      <div class="foot">amber dashed = AI-drafted seed, pending your endorsement · edit data.js to extend</div>
+    </main>`;
+  }
+
+  /* ------------------------------------------------------ principles view */
+  function PrinciplesPanel() {
+    useEffect(() => window.scrollTo(0, 0), []);
+    return html`<main class="panel">
+      <div class="crumb"><a href="#/">SDLC</a> / hub</div>
+      <div class="stage-head">
+        <div class="stage-num">THE HUB</div>
+        <h2>Principles</h2>
+        <p class="tagline">
+          Good old software engineering, applied to a new collaborator. These hold on every stage of the wheel.
+        </p>
+      </div>
+      ${DATA.principles.map(
+        (p) => html`<div class="principle-card">
+          <h3>${p.title}</h3>
+          <div class="p-sub">${p.subtitle}</div>
+          <${Md} src=${p.body} />
+        </div>`
+      )}
+    </main>`;
+  }
+
+  /* ----------------------------------------------------------------- app */
+  function App() {
+    const route = useRoute();
+
+    if (route.view === "home") {
+      return html`<div>
+        <${Topbar} />
+        <div class="home">
+          <div class="kicker">software delivery × ai agents</div>
+          <h2>${DATA.meta.title}</h2>
+          <p class="subtitle">${DATA.meta.subtitle}</p>
+          <div class="wheel-wrap"><${Wheel} /></div>
+          <div class="hint">click a stage to drill down — or the hub for the principles</div>
+        </div>
+      </div>`;
+    }
+
+    const stageIdx = DATA.stages.findIndex((s) => s.id === route.stage);
+    return html`<div>
+      <${Topbar} />
+      <div class="detail">
+        <${Sidebar} route=${route} />
+        ${route.view === "principles"
+          ? html`<${PrinciplesPanel} />`
+          : stageIdx >= 0
+          ? html`<${StagePanel} stage=${DATA.stages[stageIdx]} idx=${stageIdx} facetFocus=${route.facet} />`
+          : html`<main class="panel"><p>Unknown stage.</p></main>`}
+      </div>
+    </div>`;
+  }
+
+  render(html`<${App} />`, document.getElementById("app"));
+})();

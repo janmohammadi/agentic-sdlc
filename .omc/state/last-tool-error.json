@@ -1,0 +1,7 @@
+{
+  "tool_name": "Read",
+  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\RezaJanmohammadi\\\\.claude\\\\projects\\\\c--Repos-ideas-pocs-agentic-sdlc\\\\memory\\\\MEMORY.md\"}",
+  "error": "File does not exist. Note: your current working directory is C:\\Repos\\ideas-pocs\\agentic-sdlc.",
+  "timestamp": "2026-06-12T23:35:31.450Z",
+  "retry_count": 1
+}
