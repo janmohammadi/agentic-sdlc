@@ -127,11 +127,23 @@
       const a1 = -90 + (i + 1) * step - gap;
       const mid = (a0 + a1) / 2;
       const rm = (r1 + r2) / 2;
-      const [lx, ly] = pt(cx, cy, rm, mid);
       const rad = (mid * TAU) / 360;
       const ux = Math.cos(rad).toFixed(4);
       const uy = Math.sin(rad).toFixed(4);
       const active = activeStage === st.id;
+      // labels curve along the ring via textPath; bottom-half segments draw
+      // their text arcs reversed so nothing reads upside down. Radii stack
+      // num / title / sub from the visual top down in both hemispheres.
+      const flip = mid > 1 && mid < 179;
+      const tArc = (r) =>
+        flip
+          ? `M ${pt(cx, cy, r, a1).join(" ")} A ${r} ${r} 0 0 0 ${pt(cx, cy, r, a0).join(" ")}`
+          : `M ${pt(cx, cy, r, a0).join(" ")} A ${r} ${r} 0 0 1 ${pt(cx, cy, r, a1).join(" ")}`;
+      const pid = `tp-${st.id}${mini ? "-m" : ""}`;
+      const rNum = flip ? rm - 16 : rm + 26;
+      const rLbl = flip ? rm + 8 : rm - 2;
+      const rSub = flip ? rm + 30 : rm - 26;
+      const sub = st.name !== st.short ? st.name.replace(`${st.short} & `, "& ") : "";
       return html`<g
         class="seg ${active ? "active" : ""}"
         style=${`--px:${ux};--py:${uy};--d:${i * 70}ms`}
@@ -142,11 +154,19 @@
       >
         <path class="arc" d=${donutSeg(cx, cy, r1, r2, a0, a1)} />
         <path class="accent" d=${arcPath(cx, cy, r2 - 6, a0 + 4, a1 - 4)} />
-        <text class="num" x=${lx} y=${ly - 26} text-anchor="middle">0${i + 1}</text>
-        <text class="lbl" x=${lx} y=${ly + 1} text-anchor="middle">${st.short}</text>
+        <path class="tp" id="${pid}-num" d=${tArc(rNum)} />
+        <path class="tp" id="${pid}-lbl" d=${tArc(rLbl)} />
+        <path class="tp" id="${pid}-sub" d=${tArc(rSub)} />
+        <text class="num" text-anchor="middle">
+          <textPath href="#${pid}-num" startOffset="50%">0${i + 1}</textPath>
+        </text>
+        <text class="lbl" text-anchor="middle">
+          <textPath href="#${pid}-lbl" startOffset="50%">${st.short}</textPath>
+        </text>
         ${!mini &&
-        html`<text class="sub" x=${lx} y=${ly + 22} text-anchor="middle">
-          ${st.name !== st.short ? st.name.replace(`${st.short} & `, "& ") : ""}
+        sub &&
+        html`<text class="sub" text-anchor="middle">
+          <textPath href="#${pid}-sub" startOffset="50%">${sub}</textPath>
         </text>`}
       </g>`;
     });

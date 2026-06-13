@@ -1,0 +1,113 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1781308515320,
+  "projectRoot": "c:\\Repos\\ideas-pocs\\agentic-sdlc",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "screenshots": {
+      "path": "screenshots",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1781308515269,
+      "keyFiles": [
+        "01-home.png",
+        "02-stage.png",
+        "03-stage-expanded.png",
+        "04-principles.png",
+        "05-wheel-closeup.png"
+      ]
+    },
+    "vendor": {
+      "path": "vendor",
+      "purpose": "Third-party code",
+      "fileCount": 2,
+      "lastAccessed": 1781308515270,
+      "keyFiles": [
+        "htm-preact-standalone.umd.js",
+        "marked.min.js"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "app.js",
+      "accessCount": 6,
+      "lastAccessed": 1781309844025,
+      "type": "file"
+    },
+    {
+      "path": "styles.css",
+      "accessCount": 5,
+      "lastAccessed": 1781309852083,
+      "type": "file"
+    },
+    {
+      "path": "screenshots\\05-wheel-closeup.png",
+      "accessCount": 2,
+      "lastAccessed": 1781309881771,
+      "type": "file"
+    },
+    {
+      "path": "screenshots\\01-home.png",
+      "accessCount": 2,
+      "lastAccessed": 1781309901911,
+      "type": "file"
+    },
+    {
+      "path": "screenshots\\02-stage.png",
+      "accessCount": 2,
+      "lastAccessed": 1781309902355,
+      "type": "file"
+    },
+    {
+      "path": "index.html",
+      "accessCount": 1,
+      "lastAccessed": 1781308838719,
+      "type": "file"
+    },
+    {
+      "path": "verify.mjs",
+      "accessCount": 1,
+      "lastAccessed": 1781308983380,
+      "type": "file"
+    },
+    {
+      "path": "data.js",
+      "accessCount": 1,
+      "lastAccessed": 1781308983894,
+      "type": "file"
+    },
+    {
+      "path": "screenshots\\06-wheel-hover.png",
+      "accessCount": 1,
+      "lastAccessed": 1781309133590,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

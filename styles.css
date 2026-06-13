@@ -232,6 +232,9 @@ a:hover { text-decoration: underline; }
 .wheel .tick { stroke: rgba(140, 170, 210, 0.16); stroke-width: 1; }
 .wheel .tick.major { stroke: rgba(140, 170, 210, 0.38); }
 
+/* invisible guide arcs that the curved labels run along */
+.wheel .tp { fill: none; stroke: none; }
+
 .wheel .seg .num {
   font-family: var(--font-mono);
   font-size: 13px;
