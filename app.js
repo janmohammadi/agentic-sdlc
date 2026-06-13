@@ -266,12 +266,16 @@
   }
 
   /* -------------------------------------------------------------- topbar */
-  // theme: "pro" (light, presentation default) or "dark" (instrument panel).
-  // index.html applies the saved choice before first paint; this just toggles.
+  // themes cycle: "pro" (light, presentation default) → "dark" (instrument
+  // panel) → "paper" (cozy field notes). index.html applies the saved choice
+  // before first paint; this just advances the cycle.
+  const THEMES = ["pro", "dark", "paper"];
+  const THEME_LABEL = { pro: "○ light", dark: "◐ dark", paper: "✎ paper" };
   function Topbar() {
     const [theme, setTheme] = useState(document.documentElement.dataset.theme || "pro");
-    const toggleTheme = () => {
-      const next = theme === "dark" ? "pro" : "dark";
+    const cycleTheme = () => {
+      const idx = THEMES.indexOf(theme);
+      const next = THEMES[(idx + 1) % THEMES.length];
       document.documentElement.dataset.theme = next;
       try {
         localStorage.setItem("sdlc-theme", next);
@@ -280,6 +284,7 @@
       }
       setTheme(next);
     };
+    const next = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
     return html`<header class="topbar">
       <div class="brand" onClick=${() => (location.hash = "#/")}>
         <h1>${DATA.meta.title}</h1>
@@ -287,8 +292,8 @@
       </div>
       <div class="topbar-right">
         <div class="org">${DATA.meta.org}</div>
-        <button class="theme-btn" onClick=${toggleTheme} title="Switch visual theme">
-          ${theme === "dark" ? "◑ light" : "◐ dark"}
+        <button class="theme-btn" onClick=${cycleTheme} title="Switch visual theme">
+          ${THEME_LABEL[next]}
         </button>
       </div>
     </header>`;

@@ -115,6 +115,57 @@ html[data-theme="dark"] {
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
 }
 
+html[data-theme="paper"] {
+  /* --------- cozy paper / field-notes theme --------- */
+  --bg: #f5eedd;
+  --bg-raise: #fdf9ef;
+  --surface: #fdf9ef;
+  --surface-2: #ece3cd;
+  --hairline: rgba(82, 65, 35, 0.16);
+  --hairline-strong: rgba(82, 65, 35, 0.30);
+  --ink: #3b3225;
+  --ink-dim: #67583f;
+  --ink-faint: #9a8c6e;
+
+  --accent: #3d5a96;            /* fountain-pen blue */
+  --accent-soft: rgba(61, 90, 150, 0.10);
+  --accent-border: rgba(61, 90, 150, 0.40);
+  --amber: #a16207;             /* honey */
+  --amber-border: rgba(161, 98, 7, 0.55);
+
+  --c-opportunities: #55701f;   /* moss */
+  --c-risks: #b0402b;           /* brick */
+  --c-feedforward: #3d5a96;
+  --c-guardrails: #a16207;
+  --c-opportunities-border: rgba(85, 112, 31, 0.45);
+  --c-risks-border: rgba(176, 64, 43, 0.45);
+  --c-feedforward-border: rgba(61, 90, 150, 0.40);
+  --c-guardrails-border: rgba(161, 98, 7, 0.45);
+  --c-risks-tint: rgba(176, 64, 43, 0.035);
+
+  --tick: rgba(82, 65, 35, 0.18);
+  --tick-major: rgba(82, 65, 35, 0.38);
+  --flow-head: rgba(82, 65, 35, 0.40);
+  --orbit: rgba(61, 90, 150, 0.30);
+  --seg-grad-0: #fdf9ef;
+  --seg-grad-1: #efe5cd;
+  --hub-grad-0: #fdf9ef;
+  --hub-grad-1: #f2ead6;
+  --hub-glow-0: rgba(61, 90, 150, 0);
+  --hub-glow-1: rgba(61, 90, 150, 0.05);
+  --seg-active-fill: #e8ecf4;
+
+  --node-bg: #fdf9ef;
+  --node-bg-open: #fffdf6;
+  --card-hover-shadow: 0 2px 8px rgba(82, 65, 35, 0.14);
+
+  --topbar-bg: rgba(245, 238, 221, 0.88);
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Lora", Georgia, "Times New Roman", serif;
+  --font-mono: "Courier Prime", "IBM Plex Mono", Consolas, monospace;
+}
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -151,10 +202,23 @@ html[data-theme="dark"] body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* paper-only grain — like slightly toothy notebook stock */
+html[data-theme="paper"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.32 0 0 0 0 0.25 0 0 0 0 0.14 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23p)'/%3E%3C/svg%3E");
+}
+
 #app { position: relative; z-index: 1; }
 
 ::selection { background: var(--accent-soft); }
 html[data-theme="dark"] ::selection { background: rgba(25, 200, 230, 0.35); }
+/* highlighter-pen selection on paper */
+html[data-theme="paper"] ::selection { background: rgba(250, 204, 21, 0.45); }
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -601,6 +665,12 @@ html[data-theme="dark"] .chip {
 }
 html[data-theme="dark"] .chip::before { content: "[ "; color: var(--accent); opacity: 0.7; }
 html[data-theme="dark"] .chip::after { content: " ]"; color: var(--accent); opacity: 0.7; }
+/* paper: chips read as highlighter strokes on the page */
+html[data-theme="paper"] .chip {
+  background: linear-gradient(100deg, rgba(250, 204, 21, 0.28), rgba(250, 204, 21, 0.42));
+  border-radius: 4px;
+  color: var(--ink-dim);
+}
 
 /* facet nav */
 .facet-nav {
@@ -790,6 +860,35 @@ html[data-theme="dark"] .principle-card { backdrop-filter: blur(8px); }
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   color: var(--ink-faint);
+}
+
+/* ------------------------------------------------- paper handwriting notes */
+/* small annotations switch to a handwritten hand on paper — margin-note feel */
+html[data-theme="paper"] .home .hint,
+html[data-theme="paper"] .facet-head .f-desc,
+html[data-theme="paper"] .foot {
+  font-family: "Caveat", "Segoe Print", cursive;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+html[data-theme="paper"] .home .hint { font-size: 1.05rem; }
+html[data-theme="paper"] .facet-head .f-desc { font-size: 1.02rem; }
+html[data-theme="paper"] .foot { font-size: 0.98rem; }
+html[data-theme="paper"] .wheel .hub .hub-sub {
+  font-family: "Caveat", "Segoe Print", cursive;
+  font-size: 14px;
+}
+html[data-theme="paper"] .wheel .feedback-lbl {
+  font-family: "Caveat", "Segoe Print", cursive;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+/* index-card corners */
+html[data-theme="paper"] .node,
+html[data-theme="paper"] .principle-card {
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(82, 65, 35, 0.08);
 }
 
 /* responsive */
