@@ -30,10 +30,25 @@
     return { view: "home" };
   }
 
+  let lastRoute = parseHash();
   function useRoute() {
-    const [route, setRoute] = useState(parseHash());
+    const [route, setRoute] = useState(lastRoute);
     useEffect(() => {
-      const fn = () => setRoute(parseHash());
+      const fn = () => {
+        const next = parseHash();
+        // morph the wheel between views (View Transitions API); facet jumps
+        // within the same stage stay instant so smooth-scroll isn't frozen
+        const sameView = next.view === lastRoute.view && next.stage === lastRoute.stage;
+        lastRoute = next;
+        if (!sameView && document.startViewTransition) {
+          document.startViewTransition(async () => {
+            setRoute(next);
+            await new Promise((r) => setTimeout(r, 0)); // let preact flush the DOM
+          });
+        } else {
+          setRoute(next);
+        }
+      };
       window.addEventListener("hashchange", fn);
       return () => window.removeEventListener("hashchange", fn);
     }, []);

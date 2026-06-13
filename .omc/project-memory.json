@@ -56,14 +56,14 @@
   "hotPaths": [
     {
       "path": "app.js",
-      "accessCount": 6,
-      "lastAccessed": 1781309844025,
+      "accessCount": 7,
+      "lastAccessed": 1781310139704,
       "type": "file"
     },
     {
       "path": "styles.css",
-      "accessCount": 5,
-      "lastAccessed": 1781309852083,
+      "accessCount": 6,
+      "lastAccessed": 1781310149546,
       "type": "file"
     },
     {
@@ -106,6 +106,18 @@
       "path": "screenshots\\06-wheel-hover.png",
       "accessCount": 1,
       "lastAccessed": 1781309133590,
+      "type": "file"
+    },
+    {
+      "path": "screenshots\\07-transition-mid.png",
+      "accessCount": 1,
+      "lastAccessed": 1781310182228,
+      "type": "file"
+    },
+    {
+      "path": "screenshots\\08-transition-end.png",
+      "accessCount": 1,
+      "lastAccessed": 1781310183257,
       "type": "file"
     }
   ],
