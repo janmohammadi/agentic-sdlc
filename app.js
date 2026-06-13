@@ -87,13 +87,24 @@
     const a = (deg * TAU) / 360;
     return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
   }
-  function donutSeg(cx, cy, r1, r2, a0, a1) {
-    const [x0o, y0o] = pt(cx, cy, r2, a0);
-    const [x1o, y1o] = pt(cx, cy, r2, a1);
-    const [x0i, y0i] = pt(cx, cy, r1, a0);
-    const [x1i, y1i] = pt(cx, cy, r1, a1);
-    const large = a1 - a0 > 180 ? 1 : 0;
-    return `M ${x0o} ${y0o} A ${r2} ${r2} 0 ${large} 1 ${x1o} ${y1o} L ${x1i} ${y1i} A ${r1} ${r1} 0 ${large} 0 ${x0i} ${y0i} Z`;
+  // donut segment with rounded corners (rc = corner radius)
+  function donutSeg(cx, cy, r1, r2, a0, a1, rc = 10) {
+    const oo = ((rc / r2) * 180) / Math.PI; // angular offset of the corner at outer radius
+    const oi = ((rc / r1) * 180) / Math.PI;
+    const large = a1 - a0 - 2 * oo > 180 ? 1 : 0;
+    const p = (r, a) => pt(cx, cy, r, a).join(" ");
+    return [
+      `M ${p(r2, a0 + oo)}`,
+      `A ${r2} ${r2} 0 ${large} 1 ${p(r2, a1 - oo)}`,
+      `A ${rc} ${rc} 0 0 1 ${p(r2 - rc, a1)}`,
+      `L ${p(r1 + rc, a1)}`,
+      `A ${rc} ${rc} 0 0 1 ${p(r1, a1 - oi)}`,
+      `A ${r1} ${r1} 0 ${large} 0 ${p(r1, a0 + oi)}`,
+      `A ${rc} ${rc} 0 0 1 ${p(r1 + rc, a0)}`,
+      `L ${p(r2 - rc, a0)}`,
+      `A ${rc} ${rc} 0 0 1 ${p(r2, a0 + oo)}`,
+      "Z",
+    ].join(" ");
   }
   function arcPath(cx, cy, r, a0, a1) {
     const [x0, y0] = pt(cx, cy, r, a0);
@@ -117,15 +128,20 @@
       const mid = (a0 + a1) / 2;
       const rm = (r1 + r2) / 2;
       const [lx, ly] = pt(cx, cy, rm, mid);
+      const rad = (mid * TAU) / 360;
+      const ux = Math.cos(rad).toFixed(4);
+      const uy = Math.sin(rad).toFixed(4);
       const active = activeStage === st.id;
       return html`<g
         class="seg ${active ? "active" : ""}"
+        style=${`--px:${ux};--py:${uy};--d:${i * 70}ms`}
         onClick=${() => go(`#/stage/${st.id}`)}
         tabindex="0"
         role="button"
         aria-label=${st.name}
       >
         <path class="arc" d=${donutSeg(cx, cy, r1, r2, a0, a1)} />
+        <path class="accent" d=${arcPath(cx, cy, r2 - 6, a0 + 4, a1 - 4)} />
         <text class="num" x=${lx} y=${ly - 26} text-anchor="middle">0${i + 1}</text>
         <text class="lbl" x=${lx} y=${ly + 1} text-anchor="middle">${st.short}</text>
         ${!mini &&
@@ -134,6 +150,19 @@
         </text>`}
       </g>`;
     });
+
+    // instrument-dial tick marks outside the outer guide ring; the gap at the
+    // top leaves room for the feedback arc and its label
+    const ticks = [];
+    if (!mini) {
+      for (let d = 0; d < 360; d += 6) {
+        if (d > 230 && d < 310) continue;
+        const major = d % 30 === 0;
+        const [tx0, ty0] = pt(cx, cy, r2 + 20, d);
+        const [tx1, ty1] = pt(cx, cy, r2 + (major ? 29 : 25), d);
+        ticks.push(html`<line class="tick ${major ? "major" : ""}" x1=${tx0} y1=${ty0} x2=${tx1} y2=${ty1} />`);
+      }
+    }
 
     // small clockwise flow ticks between segments (lifecycle direction)
     const flows = DATA.stages.map((_, i) => {
@@ -160,9 +189,18 @@
           <stop offset="55%" stop-color="rgba(25,200,230,0)" />
           <stop offset="100%" stop-color="rgba(25,200,230,0.14)" />
         </radialGradient>
+        <radialGradient id="segFill" gradientUnits="userSpaceOnUse" cx=${cx} cy=${cy} r=${r2}>
+          <stop offset="64%" stop-color="#0d1727" />
+          <stop offset="100%" stop-color="#182a44" />
+        </radialGradient>
+        <linearGradient id="hubCore" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#11203a" />
+          <stop offset="100%" stop-color="#080f1a" />
+        </linearGradient>
       </defs>
       <circle class="ring-guide" cx=${cx} cy=${cy} r=${r1 - 14} />
       <circle class="ring-guide" cx=${cx} cy=${cy} r=${r2 + 14} />
+      ${ticks}
       ${flows}
       ${segs}
       <path class="feedback-arc" d=${fb} />
@@ -176,12 +214,18 @@
       >
         <circle class="core" cx=${cx} cy=${cy} r=${r1 - 44} />
         <circle class="glow" cx=${cx} cy=${cy} r=${r1 - 45} fill="url(#hubGlow)" />
+        <circle class="orbit" cx=${cx} cy=${cy} r=${r1 - 58} />
         <text class="hub-kicker" x=${cx} y=${cy - 28} text-anchor="middle">THE HUB</text>
         <text class="hub-title" x=${cx} y=${cy + 2} text-anchor="middle">Principles</text>
         ${!mini &&
         html`<text class="hub-sub" x=${cx} y=${cy + 26} text-anchor="middle">
           what holds on every stage
         </text>`}
+        ${!mini &&
+        DATA.principles.map((_, i) => {
+          const x = cx + (i - (DATA.principles.length - 1) / 2) * 16;
+          return html`<circle class="p-dot" cx=${x} cy=${cy + 48} r="2.5" />`;
+        })}
       </g>
     </svg>`;
   }
