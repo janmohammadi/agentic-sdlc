@@ -218,19 +218,19 @@
           <path d="M0,0 L8,4 L0,8 z" fill="var(--amber)" />
         </marker>
         <marker id="flowArrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M0,0 L8,4 L0,8 z" fill="rgba(140,170,210,0.5)" />
+          <path d="M0,0 L8,4 L0,8 z" class="flow-head" />
         </marker>
         <radialGradient id="hubGlow">
-          <stop offset="55%" stop-color="rgba(25,200,230,0)" />
-          <stop offset="100%" stop-color="rgba(25,200,230,0.14)" />
+          <stop offset="55%" class="g-hubglow-0" />
+          <stop offset="100%" class="g-hubglow-1" />
         </radialGradient>
         <radialGradient id="segFill" gradientUnits="userSpaceOnUse" cx=${cx} cy=${cy} r=${r2}>
-          <stop offset="64%" stop-color="#0d1727" />
-          <stop offset="100%" stop-color="#182a44" />
+          <stop offset="64%" class="g-seg-0" />
+          <stop offset="100%" class="g-seg-1" />
         </radialGradient>
         <linearGradient id="hubCore" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#11203a" />
-          <stop offset="100%" stop-color="#080f1a" />
+          <stop offset="0%" class="g-hub-0" />
+          <stop offset="100%" class="g-hub-1" />
         </linearGradient>
       </defs>
       <circle class="ring-guide" cx=${cx} cy=${cy} r=${r1 - 14} />
@@ -266,13 +266,31 @@
   }
 
   /* -------------------------------------------------------------- topbar */
+  // theme: "pro" (light, presentation default) or "dark" (instrument panel).
+  // index.html applies the saved choice before first paint; this just toggles.
   function Topbar() {
+    const [theme, setTheme] = useState(document.documentElement.dataset.theme || "pro");
+    const toggleTheme = () => {
+      const next = theme === "dark" ? "pro" : "dark";
+      document.documentElement.dataset.theme = next;
+      try {
+        localStorage.setItem("sdlc-theme", next);
+      } catch (e) {
+        /* file:// without storage — theme still applies for this session */
+      }
+      setTheme(next);
+    };
     return html`<header class="topbar">
       <div class="brand" onClick=${() => (location.hash = "#/")}>
         <h1>${DATA.meta.title}</h1>
         <span class="version">v${DATA.meta.version}</span>
       </div>
-      <div class="org">${DATA.meta.org}</div>
+      <div class="topbar-right">
+        <div class="org">${DATA.meta.org}</div>
+        <button class="theme-btn" onClick=${toggleTheme} title="Switch visual theme">
+          ${theme === "dark" ? "◑ light" : "◐ dark"}
+        </button>
+      </div>
     </header>`;
   }
 
