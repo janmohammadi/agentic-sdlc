@@ -245,13 +245,19 @@
             const cy = canvas.height / 2 - 20; // Slight upward offset to clear bottom gauges
             
             // Adjust radius depending on screen width/height bounding box constraints
-            const radius = Math.min(canvas.width, canvas.height) * 0.32;
+            const baseRadius = Math.min(canvas.width, canvas.height) * 0.32;
             
             // 6 slices of the circle starting from top (-PI/2) rotating clockwise
             for (let i = 0; i < 6; i++) {
                 const angle = (-Math.PI / 2) + (i * (2 * Math.PI / 6));
-                const x = cx + radius * Math.cos(angle);
-                const y = cy + radius * Math.sin(angle);
+                
+                // Add radial offset based on bottleneck severity
+                let bottleneck = typeof nodeBottlenecks !== 'undefined' ? (nodeBottlenecks[i] || 0) : 0;
+                let radiusOffset = bottleneck > 10 ? (bottleneck - 10) * 1.5 : 0;
+                let currentRadius = baseRadius + radiusOffset;
+
+                const x = cx + currentRadius * Math.cos(angle);
+                const y = cy + currentRadius * Math.sin(angle);
                 nodePositions.push({ x, y, angle });
 
                 // Reposition the corresponding HTML node container perfectly over coordinates
@@ -289,6 +295,9 @@
                 linkStrains[prev] = strain;
                 nodeBottlenecks[i] = strain;
             }
+
+            // Recalculate circle positions to physically push apart bottlenecked nodes
+            calculateCirclePositions();
 
             // Compute Analytical Metrics
             let intentDrift = Math.min(100, Math.round(linkStrains[0] * 0.5 + linkStrains[1] * 0.5));
