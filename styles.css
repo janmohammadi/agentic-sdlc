@@ -455,6 +455,14 @@ html[data-theme="dark"] .wheel .seg.active .accent {
 }
 .wheel .seg:hover .sub, .wheel .seg.active .sub { fill: var(--ink-dim); }
 
+/* half-dial mini wheel: same curved label stack as the full wheel, just a
+   touch larger so it survives the sidebar render size */
+.wheel.mini .seg .num { font-size: 15px; }
+.wheel.mini .seg .lbl { font-size: 20px; }
+.wheel.mini .seg .sub { font-size: 13px; }
+.wheel.mini .hub .hub-kicker { font-size: 12px; }
+.wheel.mini .hub .hub-title { font-size: 19px; }
+
 .wheel .hub {
   cursor: pointer;
   transition: filter 0.25s ease;
@@ -559,6 +567,7 @@ html[data-theme="dark"] .wheel .feedback-arc {
   overflow-y: auto;
 }
 .sidebar .mini-wheel { margin-bottom: 1rem; }
+.sidebar .mini-wheel .wheel { max-height: 52vh; }
 .sidebar nav { display: flex; flex-direction: column; gap: 2px; }
 .sidebar nav a {
   display: flex;
@@ -814,6 +823,37 @@ html[data-theme="dark"] .facet[data-facet="risks"] .node:hover { box-shadow: 0 0
   padding: 0.06em 0.35em;
 }
 .md h1, .md h2, .md h3, .md h4 { font-family: var(--font-display); color: var(--ink); margin: 0.8rem 0 0.3rem; }
+.md blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--surface-2);
+  padding: 0.8rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 4.4px 4.4px 0;
+}
+.md blockquote p {
+  margin: 0;
+  color: var(--ink-dim);
+  font-style: italic;
+}
+.md pre {
+  background: var(--surface-2);
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid var(--hairline);
+  margin: 1rem 0;
+}
+.md pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.88em;
+  color: var(--ink-dim);
+  border: none;
+}
+.principles-outro {
+  margin-top: 2.5rem;
+}
 
 /* blocks */
 .block-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.7rem 0 0.2rem; }

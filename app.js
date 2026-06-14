@@ -136,10 +136,15 @@
     const n = DATA.stages.length;
     const step = 360 / n;
     const go = (h) => (location.hash = h);
+    // mini = half-dial pinned to the sidebar's left edge: only the right
+    // half of the wheel is in the viewBox, rotated so the active stage sits
+    // at 3 o'clock with its neighbours above and below
+    const activeIdx = DATA.stages.findIndex((st) => st.id === activeStage);
+    const base = mini && activeIdx >= 0 ? -(activeIdx + 0.5) * step : -90;
 
     const segs = DATA.stages.map((st, i) => {
-      const a0 = -90 + i * step + gap;
-      const a1 = -90 + (i + 1) * step - gap;
+      const a0 = base + i * step + gap;
+      const a1 = base + (i + 1) * step - gap;
       const mid = (a0 + a1) / 2;
       const rm = (r1 + r2) / 2;
       const rad = (mid * TAU) / 360;
@@ -149,7 +154,10 @@
       // labels curve along the ring via textPath; bottom-half segments draw
       // their text arcs reversed so nothing reads upside down. Radii stack
       // num / title / sub from the visual top down in both hemispheres.
-      const flip = mid > 1 && mid < 179;
+      // The half-dial's rotation can push mids outside -90..270, so map back
+      // into the full wheel's frame before deciding the hemisphere.
+      const norm = ((((mid + 90) % 360) + 360) % 360) - 90;
+      const flip = norm > 1 && norm < 179;
       const tArc = (r) =>
         flip
           ? `M ${pt(cx, cy, r, a1).join(" ")} A ${r} ${r} 0 0 0 ${pt(cx, cy, r, a0).join(" ")}`
@@ -159,6 +167,23 @@
       const rLbl = flip ? rm + 8 : rm - 2;
       const rSub = flip ? rm + 30 : rm - 26;
       const sub = st.name !== st.short ? st.name.replace(`${st.short} & `, "& ") : "";
+      // segments rotated onto the dial's hidden left half skip their labels
+      const inView = !mini || Math.cos(rad) > 0.1;
+      const labels =
+        inView &&
+        html`<path class="tp" id="${pid}-num" d=${tArc(rNum)} />
+          <path class="tp" id="${pid}-lbl" d=${tArc(rLbl)} />
+          <path class="tp" id="${pid}-sub" d=${tArc(rSub)} />
+          <text class="num" text-anchor="middle">
+            <textPath href="#${pid}-num" startOffset="50%">0${i + 1}</textPath>
+          </text>
+          <text class="lbl" text-anchor="middle">
+            <textPath href="#${pid}-lbl" startOffset="50%">${st.short}</textPath>
+          </text>
+          ${sub &&
+          html`<text class="sub" text-anchor="middle">
+            <textPath href="#${pid}-sub" startOffset="50%">${sub}</textPath>
+          </text>`}`;
       return html`<g
         class="seg ${active ? "active" : ""}"
         style=${`--px:${ux};--py:${uy};--d:${i * 70}ms`}
@@ -169,20 +194,7 @@
       >
         <path class="arc" d=${donutSeg(cx, cy, r1, r2, a0, a1)} />
         <path class="accent" d=${arcPath(cx, cy, r2 - 6, a0 + 4, a1 - 4)} />
-        <path class="tp" id="${pid}-num" d=${tArc(rNum)} />
-        <path class="tp" id="${pid}-lbl" d=${tArc(rLbl)} />
-        <path class="tp" id="${pid}-sub" d=${tArc(rSub)} />
-        <text class="num" text-anchor="middle">
-          <textPath href="#${pid}-num" startOffset="50%">0${i + 1}</textPath>
-        </text>
-        <text class="lbl" text-anchor="middle">
-          <textPath href="#${pid}-lbl" startOffset="50%">${st.short}</textPath>
-        </text>
-        ${!mini &&
-        sub &&
-        html`<text class="sub" text-anchor="middle">
-          <textPath href="#${pid}-sub" startOffset="50%">${sub}</textPath>
-        </text>`}
+        ${labels}
       </g>`;
     });
 
@@ -201,7 +213,7 @@
 
     // small clockwise flow ticks between segments (lifecycle direction)
     const flows = DATA.stages.map((_, i) => {
-      const a = -90 + (i + 1) * step;
+      const a = base + (i + 1) * step;
       return html`<path class="flow" d=${arcPath(cx, cy, (r1 + r2) / 2, a - gap + 1.4, a + gap - 1.4)} />`;
     });
 
@@ -212,7 +224,16 @@
     const fb = arcPath(cx, cy, fbR, fbA0, fbA1);
     const [flx, fly] = pt(cx, cy, fbR + 18, -90);
 
-    return html`<svg class="wheel ${mini ? "mini" : ""}" viewBox="0 0 ${S} ${S + 10}" aria-label="SDLC wheel">
+    // half-dial crop: viewBox starts at the wheel's center so only the right
+    // half renders, pinned to the sidebar's left edge by xMinYMid
+    const R = r2 + 16;
+    const vb = mini ? `${cx} ${cy - R} ${R + 12} ${R * 2}` : `0 0 ${S} ${S + 10}`;
+    return html`<svg
+      class="wheel ${mini ? "mini" : ""}"
+      viewBox=${vb}
+      preserveAspectRatio=${mini ? "xMinYMid meet" : "xMidYMid meet"}
+      aria-label="SDLC wheel"
+    >
       <defs>
         <marker id="fbArrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0,0 L8,4 L0,8 z" fill="var(--amber)" />
@@ -238,7 +259,7 @@
       ${ticks}
       ${flows}
       ${segs}
-      <path class="feedback-arc" d=${fb} />
+      ${!mini && html`<path class="feedback-arc" d=${fb} />`}
       ${!mini && html`<text class="feedback-lbl" x=${flx} y=${fly - 2} text-anchor="middle">continuous feedback</text>`}
       <g
         class="hub ${activeStage === "__principles" ? "active" : ""}"
@@ -250,8 +271,8 @@
         <circle class="core" cx=${cx} cy=${cy} r=${r1 - 44} />
         <circle class="glow" cx=${cx} cy=${cy} r=${r1 - 45} fill="url(#hubGlow)" />
         <circle class="orbit" cx=${cx} cy=${cy} r=${r1 - 58} />
-        <text class="hub-kicker" x=${cx} y=${cy - 28} text-anchor="middle">THE HUB</text>
-        <text class="hub-title" x=${cx} y=${cy + 2} text-anchor="middle">Principles</text>
+        <text class="hub-kicker" x=${mini ? cx + 80 : cx} y=${mini ? cy - 14 : cy - 28} text-anchor="middle">THE HUB</text>
+        <text class="hub-title" x=${mini ? cx + 80 : cx} y=${mini ? cy + 12 : cy + 2} text-anchor="middle">Principles</text>
         ${!mini &&
         html`<text class="hub-sub" x=${cx} y=${cy + 26} text-anchor="middle">
           what holds on every stage
@@ -379,9 +400,7 @@
       <div class="stage-head">
         <div class="stage-num">THE HUB</div>
         <h2>Principles</h2>
-        <p class="tagline">
-          Good old software engineering, applied to a new collaborator. These hold on every stage of the wheel.
-        </p>
+        <${Md} src=${DATA.principlesIntro} />
       </div>
       ${DATA.principles.map(
         (p) => html`<div class="principle-card">
@@ -390,6 +409,7 @@
           <${Md} src=${p.body} />
         </div>`
       )}
+      ${DATA.principlesOutro && html`<div class="principles-outro"><${Md} src=${DATA.principlesOutro} /></div>`}
     </main>`;
   }
 

@@ -23,55 +23,74 @@ window.SDLC_DATA = {
   },
 
   /* ---------------------------------------------------------------------------
+     PRINCIPLES INTRO — the lede that opens the hub, above the principle cards.
+     ------------------------------------------------------------------------ */
+  principlesIntro: `If you bolt a jet engine onto a golf cart without upgrading the brakes, suspension, or steering, you don't get to your destination faster—you just crash into a wall at supersonic speed. AI agents are that jet engine.
+
+---
+
+### The Trap of the Turbocharged Engine
+
+When writing code becomes cheap and instant, the bottleneck immediately shifts from **production** to **verification**.
+
+If an AI agent can generate a 500-line pull request in three seconds, but your CI/CD pipeline is not that trustworthy, or your team relies on manual QA, your system stalls. Even worse, if you trust that code blindly, you are simply automating the generation of technical debt.
+
+The core tenets of **DORA** and **Extreme Programming (XP)** aren't relics of the pre-AI era; they are the exact blueprints required to survive it.
+
+#### Why the Feedback Loop is Non-Negotiable
+
+\`\`\`
+[AI Generation] ──> [Automated Testing] ──> [Continuous Integration] ──> [Instant Feedback]
+       │                                                                        │
+       └─────────────────────── Fast Cycle = Safe Speed ────────────────────────┘
+\`\`\`
+
+* **Shrinking the Blast Radius:** When an AI can make changes across a codebase instantly, those changes *must* be microscopic and decoupled. If your architecture is a monolith with tight coupling, an AI agent will inadvertently trigger regression side-effects faster than you can trace them.
+* **The "Intern" Paradox:** We need to treat AI agents like incredibly fast, wildly ambitious interns. They have access to all the world's stack overflow data but zero contextual intuition about your business logic. Rigor is the only thing that bridges that gap.
+
+---
+
+### The 5 Disciplines for the AI Era
+
+To keep that "faster engine" from turning into a liability, the engineering discipline has to evolve around five core pillars:`,
+
+  /* ---------------------------------------------------------------------------
      PRINCIPLES — the hub of the wheel. These apply to every stage.
      ------------------------------------------------------------------------ */
   principles: [
     {
-      id: "single-source",
-      title: "Codebase as Single Source of Truth",
-      subtitle: "Documentation, architecture, decisions — all in the repo",
-      body: `Everything an agent (or a new team member) needs lives alongside the code it describes:
-
-- Documentation as code
-- Diagrams as code
-- Architecture as code
-- Infrastructure as code
-- Agent context (rules, skills) versioned in the repository`,
+      id: "test-driven-prompting",
+      title: "1. Test-Driven Prompting (TDP)",
+      subtitle: "Define boundaries before letting an agent touch production code",
+      body: `Before letting an agent touch production code, the human engineer must define the boundaries. Writing the test suite *first* (or having the AI generate tests based on strict human specifications) ensures the agent is constrained by a deterministic safety net. If the tests don't pass, the code doesn't exist.`,
     },
     {
-      id: "unified-context",
-      title: "Unified Agent Context",
-      subtitle: "One agent, enriched by the whole team",
-      body: `Senior engineers onboard the agent like a team member. Context files are curated and versioned in the repository. **All roles — PO, BA, developer, architect — use the same project-aware agent**, so requirements, mockups and code share one source of truth. Agent knowledge compounds over time through team feedback.`,
+      id: "aggressive-cicd",
+      title: "2. Aggressive CI/CD Automation",
+      subtitle: "The brakes must be just as fast as the engine",
+      body: `Your deployment pipeline must be ruthless. If an agent submits code, it should automatically trigger linting, static analysis, security vulnerability scanning, and unit/integration tests within seconds. The "brakes" must be just as fast as the engine.`,
     },
     {
-      id: "deterministic-gates",
-      title: "Deterministic Over Probabilistic",
-      subtitle: "Quality gates must be reproducible, every time",
-      body: `A coding agent is non-deterministic by design. The response is not to stop using it — it is to wrap it in machinery that is deterministic: architecture tests, E2E & integration suites, static analysis, type checkers. Same input, same result, every time.
-
-**We never let a probabilistic AI grade its own homework.** Invest in gate quality — agents can help write the gates.`,
+      id: "observability",
+      title: "3. Observability as a First-Class Citizen",
+      subtitle: "Sharp instruments to immediately detect code deviations",
+      body: `Because AI-generated code can introduce subtle, emergent behaviors in production, real-time monitoring, tracing, and logging are critical. You need sharp instruments to immediately detect when a new deployment causes a spike in latency or error rates, allowing for automated rollbacks.`,
     },
     {
-      id: "feedback-loops",
-      title: "Shorter Feedback Loops, Everywhere",
-      subtitle: "Customer ↔ product ↔ developers ↔ architects ↔ operations",
-      body: `Speed is not about writing code faster. It is about closing the gap between what users experience and what the team builds next — and between every pair of roles in the project: customer to product team, developers to architects, developers to their own code, production back to planning.
-
-Agents shrink each of these loops: working PoCs in days instead of slides in weeks, feedback items fixed the same day, production signals summarized into the next iteration's requirements.`,
+      id: "micro-reviews",
+      title: "4. Continuous Micro-Reviews",
+      subtitle: "Enforce a discipline of atomic, single-intent changes",
+      body: `The days of reviewing massive, 1,000-line PRs are dying. Teams must enforce a discipline of atomic, single-intent changes. It is much easier for a human to validate a 15-line AI optimization than a sweeping architectural overhaul.`,
     },
     {
-      id: "cultural-shift",
-      title: "Cultural Shift, Not a Tool Change",
-      subtitle: "A way-of-working change",
-      body: `- The team owns the codebase, not the agent
-- Same onboarding rigor for agents as for new developers
-- High-velocity teams already solved this: strong gates
-- AI augments humans — never replaces accountability
-- Team structure shifts toward small, cross-functional roles
-- Complexity is the enemy, not velocity`,
+      id: "architectural-decoupling",
+      title: "5. Architectural Decoupling",
+      subtitle: "Highly modular context to limit failure blast radius",
+      body: `To let AI agents loose safely, codebases must be highly modular (microservices, clean architecture, or well-defined domain boundaries). If an AI messes up within a strictly bounded context, the failure is isolated and easily reverted.`,
     },
   ],
+
+  principlesOutro: `> **The Bottom Line:** AI doesn't replace the need for senior engineering discipline; it amplifies it. The highest-performing teams won't be the ones who prompt the fastest, but the ones who build the most resilient guardrails to catch the speed.`,
 
   /* ---------------------------------------------------------------------------
      STAGES — the six segments of the circle, in lifecycle order.
