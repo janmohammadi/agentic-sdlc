@@ -67,33 +67,39 @@
         <div id="circle-nodes-layer" class="absolute inset-0 z-10 pointer-events-none">
             
             <div id="node-0" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-teal-400">1. Product Intent</div>
+                <div class="text-[9px] uppercase font-bold tracking-widest text-teal-400">1. Analysis</div>
                 <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-0">50%</div>
-                <div class="text-[9px] text-slate-500 font-mono">Clarity</div>
+                <div class="text-[9px] text-slate-500 font-mono">Requirements</div>
             </div>
 
             <div id="node-1" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-blue-400">2. Context & Specs</div>
+                <div class="text-[9px] uppercase font-bold tracking-widest text-blue-400">2. Architecture</div>
                 <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-1">50%</div>
-                <div class="text-[9px] text-slate-500 font-mono">Refinement Speed</div>
+                <div class="text-[9px] text-slate-500 font-mono">Design</div>
             </div>
 
             <div id="node-2" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-purple-400">3. AI Code Engine</div>
+                <div class="text-[9px] uppercase font-bold tracking-widest text-purple-400">3. Development</div>
                 <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-2">0%</div>
-                <div class="text-[9px] text-slate-500 font-mono">Generation Speed</div>
+                <div class="text-[9px] text-slate-500 font-mono">Code Gen Speed</div>
             </div>
 
             <div id="node-3" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-amber-400">4. Verification</div>
+                <div class="text-[9px] uppercase font-bold tracking-widest text-amber-400">4. Testing & QA</div>
                 <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-3">50%</div>
-                <div class="text-[9px] text-slate-500 font-mono">Continuous Testing</div>
+                <div class="text-[9px] text-slate-500 font-mono">Verification</div>
             </div>
 
             <div id="node-4" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-emerald-400">5. Production</div>
-                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-4">100%</div>
-                <div class="text-[9px] text-slate-500 font-mono">System Stability</div>
+                <div class="text-[9px] uppercase font-bold tracking-widest text-emerald-400">5. Delivery</div>
+                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-4">30%</div>
+                <div class="text-[9px] text-slate-500 font-mono">Release Speed</div>
+            </div>
+
+            <div id="node-5" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
+                <div class="text-[9px] uppercase font-bold tracking-widest text-rose-400">6. Operations</div>
+                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-5">50%</div>
+                <div class="text-[9px] text-slate-500 font-mono">Feedback</div>
             </div>
 
         </div>
@@ -129,43 +135,50 @@
         </div>
     </main>
 
-    <footer class="max-w-7xl w-full mx-auto bg-slate-900/60 border border-slate-900 rounded-2xl p-4 md:p-5 shadow-xl backdrop-blur-md z-10">
+    <footer class="max-w-7xl w-full mx-auto bg-slate-900/60 border border-slate-900 rounded-2xl p-4 md:p-5 shadow-xl backdrop-blur-md z-10 mt-4">
         <h3 class="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-3 font-mono">⚙️ Operational Flywheel Levers</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <div class="flex flex-col gap-1">
                 <div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-400 font-medium">Product Clarity</span>
-                    <span id="slider-val-product" class="text-teal-400 font-mono font-bold">50%</span>
+                    <span class="text-slate-400 font-medium">Analysis</span>
+                    <span id="slider-val-analysis" class="text-teal-400 font-mono font-bold">50%</span>
                 </div>
-                <input type="range" id="sl-product" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-teal-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
+                <input type="range" id="sl-analysis" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-teal-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
             </div>
             <div class="flex flex-col gap-1">
                 <div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-400 font-medium">BA Spec Speed</span>
-                    <span id="slider-val-ba" class="text-blue-400 font-mono font-bold">50%</span>
+                    <span class="text-slate-400 font-medium">Architecture</span>
+                    <span id="slider-val-arch" class="text-blue-400 font-mono font-bold">50%</span>
                 </div>
-                <input type="range" id="sl-ba" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-blue-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
+                <input type="range" id="sl-arch" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-blue-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
             </div>
             <div class="flex flex-col gap-1 bg-purple-950/10 p-1.5 rounded-xl border border-purple-900/20">
                 <div class="flex justify-between items-center text-xs">
-                    <span class="text-purple-300 font-bold">AI Coding Speed 🚀</span>
+                    <span class="text-purple-300 font-bold">Development 🚀</span>
                     <span id="slider-val-dev" class="text-purple-400 font-mono font-bold">0%</span>
                 </div>
                 <input type="range" id="sl-dev" min="0" max="200" value="0" oninput="updateSimulation()" class="w-full accent-purple-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
             </div>
             <div class="flex flex-col gap-1">
                 <div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-400 font-medium">QA Review Capacity</span>
+                    <span class="text-slate-400 font-medium">Testing & QA</span>
                     <span id="slider-val-qa" class="text-amber-400 font-mono font-bold">50%</span>
                 </div>
                 <input type="range" id="sl-qa" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-amber-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
             </div>
-            <div class="flex flex-col gap-1 bg-emerald-950/10 p-1.5 rounded-xl border border-emerald-900/20">
+            <div class="flex flex-col gap-1">
                 <div class="flex justify-between items-center text-xs">
-                    <span class="text-emerald-300 font-bold">Automated CI/CD (Brakes)</span>
-                    <span id="slider-val-brakes" class="text-emerald-400 font-mono font-bold">30%</span>
+                    <span class="text-emerald-300 font-bold">Delivery</span>
+                    <span id="slider-val-delivery" class="text-emerald-400 font-mono font-bold">30%</span>
                 </div>
-                <input type="range" id="sl-brakes" min="0" max="100" value="30" oninput="updateSimulation()" class="w-full accent-emerald-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
+                <input type="range" id="sl-delivery" min="0" max="100" value="30" oninput="updateSimulation()" class="w-full accent-emerald-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
+            </div>
+            <div class="flex flex-col gap-1">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-400 font-medium">Operations</span>
+                    <span id="slider-val-ops" class="text-rose-400 font-mono font-bold">50%</span>
+                </div>
+                <input type="range" id="sl-ops" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-rose-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
             </div>
         </div>
     </footer>
@@ -176,17 +189,18 @@
         
         let particles = [];
         let nodePositions = [];
-        let config = { prod: 50, ba: 50, dev: 0, qa: 50, brakes: 30 };
-        let lastSpawnTimes = [0, 0, 0, 0, 0];
-        let linkStrains = [0, 0, 0, 0, 0];
-        let nodeBottlenecks = [0, 0, 0, 0, 0];
+        let config = { analysis: 50, arch: 50, dev: 0, qa: 50, delivery: 30, ops: 50 };
+        let lastSpawnTimes = [0, 0, 0, 0, 0, 0];
+        let linkStrains = [0, 0, 0, 0, 0, 0];
+        let nodeBottlenecks = [0, 0, 0, 0, 0, 0];
 
         const tooltipDefinitions = [
-            { id: 0, title: "Alignment Gap", desc: "Product intent disconnected from specs. Building the wrong thing." },
-            { id: 1, title: "Context Starvation", desc: "AI generating code without clear boundaries, leading to hallucinations." },
-            { id: 2, title: "Validation Bottleneck", desc: "Code generation outpacing review capacity. Debt accumulating." },
-            { id: 3, title: "Deployment Friction", desc: "Weak automated pipelines causing manual release stress." },
-            { id: 4, title: "Feedback Loop Broken", desc: "Escaped defects failing to inform product strategy." }
+            { id: 0, title: "Unfeasible Requirements", desc: "Analysis demands features the Architecture cannot safely support." },
+            { id: 1, title: "Implementation Drift", desc: "AI Development generates code that ignores Architectural boundaries." },
+            { id: 2, title: "Validation Bottleneck", desc: "Development volume outpaces Testing capacity. Debt accumulates." },
+            { id: 3, title: "Deployment Friction", desc: "Verified code is bottlenecked by manual Delivery & Release processes." },
+            { id: 4, title: "Blind Releases", desc: "Fast Delivery overwhelms Operations monitoring. Incidents increase." },
+            { id: 5, title: "Feedback Loop Broken", desc: "Operations issues fail to inform the next Analysis cycle." }
         ];
 
         function getQuadraticBezierXY(t, sx, sy, cp1x, cp1y, ex, ey) {
@@ -202,7 +216,7 @@
             layer.id = 'tooltips-layer';
             layer.className = 'absolute inset-0 z-30 pointer-events-none';
             
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 const tp = document.createElement('div');
                 tp.id = `tp-${i}`;
                 tp.className = 'absolute pointer-events-auto group hidden -translate-x-1/2 -translate-y-1/2 transition-all duration-300';
@@ -233,9 +247,9 @@
             // Adjust radius depending on screen width/height bounding box constraints
             const radius = Math.min(canvas.width, canvas.height) * 0.32;
             
-            // 5 slices of the circle starting from top (-PI/2) rotating clockwise
-            for (let i = 0; i < 5; i++) {
-                const angle = (-Math.PI / 2) + (i * (2 * Math.PI / 5));
+            // 6 slices of the circle starting from top (-PI/2) rotating clockwise
+            for (let i = 0; i < 6; i++) {
+                const angle = (-Math.PI / 2) + (i * (2 * Math.PI / 6));
                 const x = cx + radius * Math.cos(angle);
                 const y = cy + radius * Math.sin(angle);
                 nodePositions.push({ x, y, angle });
@@ -251,40 +265,35 @@
         }
 
         function updateSimulation() {
-            config.prod = parseInt(document.getElementById('sl-product').value);
-            config.ba = parseInt(document.getElementById('sl-ba').value);
+            config.analysis = parseInt(document.getElementById('sl-analysis').value);
+            config.arch = parseInt(document.getElementById('sl-arch').value);
             config.dev = parseInt(document.getElementById('sl-dev').value);
             config.qa = parseInt(document.getElementById('sl-qa').value);
-            config.brakes = parseInt(document.getElementById('sl-brakes').value);
+            config.delivery = parseInt(document.getElementById('sl-delivery').value);
+            config.ops = parseInt(document.getElementById('sl-ops').value);
 
             // Reflect live text indicators
-            document.getElementById('slider-val-product').innerText = config.prod + '%';
-            document.getElementById('slider-val-ba').innerText = config.ba + '%';
+            document.getElementById('slider-val-analysis').innerText = config.analysis + '%';
+            document.getElementById('slider-val-arch').innerText = config.arch + '%';
             document.getElementById('slider-val-dev').innerText = config.dev + '%';
             document.getElementById('slider-val-qa').innerText = config.qa + '%';
-            document.getElementById('slider-val-brakes').innerText = config.brakes + '%';
+            document.getElementById('slider-val-delivery').innerText = config.delivery + '%';
+            document.getElementById('slider-val-ops').innerText = config.ops + '%';
 
-            document.getElementById('lbl-node-0').innerText = config.prod + '%';
-            document.getElementById('lbl-node-1').innerText = config.ba + '%';
-            document.getElementById('lbl-node-2').innerText = config.dev + '%';
-            document.getElementById('lbl-node-3').innerText = config.qa + '%';
+            const speeds = [config.analysis, config.arch, config.dev, config.qa, config.delivery, config.ops];
 
-            // System calculations based on circular handoff boundaries
-            const gapSpecsVsAI = Math.max(0, config.dev - config.ba);
-            const gapAIVsValidation = Math.max(0, config.dev - (config.qa + (config.brakes * 0.8)));
-            const gapProdVsBA = Math.abs(config.prod - config.ba);
+            for(let i=0; i<6; i++) {
+                document.getElementById('lbl-node-'+i).innerText = speeds[i] + '%';
+                let prev = (i + 5) % 6;
+                let strain = Math.max(0, speeds[prev] - speeds[i]);
+                linkStrains[prev] = strain;
+                nodeBottlenecks[i] = strain;
+            }
 
             // Compute Analytical Metrics
-            const intentDrift = Math.min(100, Math.round(gapSpecsVsAI * 0.55 + (100 - config.prod) * 0.25));
-            const loopStrain = Math.min(100, Math.round(Math.max(gapProdVsBA, gapSpecsVsAI, gapAIVsValidation * 1.2)));
-            let defectLeakage = (gapSpecsVsAI * 0.35) + (gapAIVsValidation * 0.6) - (config.brakes * 0.4);
-            defectLeakage = Math.max(0, Math.min(100, Math.round(defectLeakage)));
-
-            linkStrains[0] = gapProdVsBA;
-            linkStrains[1] = gapSpecsVsAI;
-            linkStrains[2] = gapAIVsValidation;
-            linkStrains[3] = Math.max(0, config.dev - config.brakes);
-            linkStrains[4] = defectLeakage * 1.2;
+            let intentDrift = Math.min(100, Math.round(linkStrains[0] * 0.5 + linkStrains[1] * 0.5));
+            let loopStrain = Math.min(100, Math.round(Math.max(...linkStrains) * 1.2));
+            let defectLeakage = Math.max(0, Math.min(100, Math.round(linkStrains[2] * 0.6 + linkStrains[3] * 0.4)));
 
             // Draw System Metrics Updates
             document.getElementById('gauge-txt-drift').innerText = intentDrift + '%';
@@ -292,32 +301,24 @@
 
             const txtStrain = document.getElementById('gauge-txt-strain');
             const barStrain = document.getElementById('gauge-bar-strain');
-            const statusTicker = document.getElementById('status-ticker');
             barStrain.style.width = loopStrain + '%';
 
             if (loopStrain > 70) {
                 txtStrain.innerText = "💥 LOOP FRACTURED";
                 txtStrain.className = "text-red-500 font-bold";
                 barStrain.className = "bg-red-600 h-full rounded-full transition-all";
-                statusTicker.innerText = "FLYWHEEL CRITICAL: Centrifugal Desync";
-                statusTicker.className = "bg-red-950/40 text-red-400 border border-red-900/40 px-4 py-2 rounded-xl font-mono text-xs text-center min-w-[280px]";
             } else if (loopStrain > 35) {
                 txtStrain.innerText = "⚠️ UNBALANCED WOBBLE";
                 txtStrain.className = "text-amber-500 font-bold";
                 barStrain.className = "bg-amber-500 h-full rounded-full transition-all";
-                statusTicker.innerText = "FLYWHEEL WARNING: Heavy Loop Strain";
-                statusTicker.className = "bg-amber-950/40 text-amber-400 border border-amber-900/40 px-4 py-2 rounded-xl font-mono text-xs text-center min-w-[280px]";
             } else {
                 txtStrain.innerText = "✓ Balanced & Synced";
                 txtStrain.className = "text-emerald-400 font-bold";
                 barStrain.className = "bg-emerald-500 h-full rounded-full transition-all";
-                statusTicker.innerText = "FLYWHEEL SPIN: Nominal / Synchronized";
-                statusTicker.className = "bg-slate-900/80 text-teal-400 border border-slate-800/80 px-4 py-2 rounded-xl font-mono text-xs text-center min-w-[280px]";
             }
 
             document.getElementById('gauge-txt-bugs').innerText = defectLeakage + '%';
             document.getElementById('gauge-bar-bugs').style.width = defectLeakage + '%';
-            document.getElementById('lbl-node-4').innerText = (100 - defectLeakage) + '%';
             
             const bugTxt = document.getElementById('gauge-txt-bugs');
             const bugBar = document.getElementById('gauge-bar-bugs');
@@ -329,13 +330,7 @@
                 bugBar.className = "bg-emerald-500 h-full rounded-full transition-all";
             }
 
-            nodeBottlenecks[1] = Math.max(0, config.prod - config.ba);
-            nodeBottlenecks[2] = Math.max(0, config.ba - config.dev);
-            nodeBottlenecks[3] = Math.max(0, config.dev - config.qa);
-            nodeBottlenecks[4] = Math.max(0, config.qa - config.brakes);
-            nodeBottlenecks[0] = Math.max(0, defectLeakage * 1.5 - config.prod);
-
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 const el = document.getElementById(`node-${i}`);
                 if (!el) continue;
 
@@ -365,26 +360,23 @@
         }
 
         function createParticle(fromIndex) {
-            let color = '#2dd4bf'; // default teal
+            const colors = ['#2dd4bf', '#3b82f6', '#a855f7', '#f59e0b', '#10b981', '#f43f5e'];
+            let color = colors[fromIndex];
             let type = 'normal';
 
-            if (fromIndex === 1) color = '#3b82f6'; // blue spec context
             if (fromIndex === 2) {
-                color = '#a855f7'; // purple AI generated logic
                 // Loop mutation defect generation rule:
-                if (Math.random() * 130 < (config.dev - config.ba)) {
+                if (Math.random() * 130 < linkStrains[2]) {
                     color = '#f43f5e'; // red bug particle
                     type = 'defect';
                 }
             }
-            if (fromIndex === 3) color = '#f59e0b'; // amber QA validation pack
-            if (fromIndex === 4) color = '#10b981'; // emerald prod delivery packet loopback
 
             particles.push({
                 x: nodePositions[fromIndex].x,
                 y: nodePositions[fromIndex].y,
                 startIndex: fromIndex,
-                targetIndex: (fromIndex + 1) % 5, // Closed loop modulo math wrapping 4 -> 0
+                targetIndex: (fromIndex + 1) % 6, // Closed loop modulo math wrapping 5 -> 0
                 progress: 0,
                 speed: 0.01 + (fromIndex === 2 ? (config.dev / 8000) : 0.015),
                 color: color,
@@ -393,9 +385,9 @@
         }
 
         function drawCircularLinks() {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 6; i++) {
                 const start = nodePositions[i];
-                const end = nodePositions[(i + 1) % 5];
+                const end = nodePositions[(i + 1) % 6];
                 let strain = linkStrains[i];
 
                 let cx = canvas.width / 2;
@@ -540,14 +532,13 @@
 
         function handleSpawningLoop() {
             const now = Date.now();
-            if (now - lastSpawnTimes[0] > (22000 / config.prod)) { createParticle(0); lastSpawnTimes[0] = now; }
-            if (now - lastSpawnTimes[1] > (22000 / config.ba)) { createParticle(1); lastSpawnTimes[1] = now; }
-            if (config.dev > 0 && now - lastSpawnTimes[2] > (35000 / config.dev)) { createParticle(2); lastSpawnTimes[2] = now; }
-            if (now - lastSpawnTimes[3] > (22000 / config.qa)) { createParticle(3); lastSpawnTimes[3] = now; }
-            
-            // Loop closure spawning logic: Production loopback context into Product strategy boards
-            let prodStability = parseInt(document.getElementById('lbl-node-4').innerText);
-            if (now - lastSpawnTimes[4] > (22000 / Math.max(10, prodStability))) { createParticle(4); lastSpawnTimes[4] = now; }
+            const speeds = [config.analysis, config.arch, config.dev, config.qa, config.delivery, config.ops];
+            for(let i=0; i<6; i++) {
+                if (speeds[i] > 0 && now - lastSpawnTimes[i] > (30000 / speeds[i])) { 
+                    createParticle(i); 
+                    lastSpawnTimes[i] = now; 
+                }
+            }
         }
 
         function animationLoop() {
@@ -560,21 +551,22 @@
 
         function loadPreset(type) {
             const levers = {
-                prod: document.getElementById('sl-product'),
-                ba: document.getElementById('sl-ba'),
+                analysis: document.getElementById('sl-analysis'),
+                arch: document.getElementById('sl-arch'),
                 dev: document.getElementById('sl-dev'),
                 qa: document.getElementById('sl-qa'),
-                brakes: document.getElementById('sl-brakes')
+                delivery: document.getElementById('sl-delivery'),
+                ops: document.getElementById('sl-ops')
             };
 
             if (type === 'slog') {
-                levers.prod.value = 80; levers.ba.value = 65; levers.dev.value = 25; levers.qa.value = 70; levers.brakes.value = 20;
+                levers.analysis.value = 80; levers.arch.value = 75; levers.dev.value = 25; levers.qa.value = 70; levers.delivery.value = 40; levers.ops.value = 60;
             } else if (type === 'whiplash') {
-                levers.prod.value = 50; levers.ba.value = 45; levers.dev.value = 195; levers.qa.value = 35; levers.brakes.value = 10;
+                levers.analysis.value = 50; levers.arch.value = 45; levers.dev.value = 195; levers.qa.value = 35; levers.delivery.value = 20; levers.ops.value = 30;
             } else if (type === 'laggingBA') {
-                levers.prod.value = 95; levers.ba.value = 15; levers.dev.value = 140; levers.qa.value = 60; levers.brakes.value = 30;
+                levers.analysis.value = 95; levers.arch.value = 15; levers.dev.value = 140; levers.qa.value = 60; levers.delivery.value = 40; levers.ops.value = 50;
             } else if (type === 'agility') {
-                levers.prod.value = 95; levers.ba.value = 95; levers.dev.value = 195; levers.qa.value = 90; levers.brakes.value = 95;
+                levers.analysis.value = 95; levers.arch.value = 95; levers.dev.value = 195; levers.qa.value = 90; levers.delivery.value = 95; levers.ops.value = 95;
             }
             
             particles = [];
