@@ -73,32 +73,26 @@
             </div>
 
             <div id="node-1" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-blue-400">2. Architecture</div>
-                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-1">50%</div>
-                <div class="text-[9px] text-slate-500 font-mono">Design</div>
-            </div>
-
-            <div id="node-2" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-purple-400">3. Development</div>
-                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-2">0%</div>
+                <div class="text-[9px] uppercase font-bold tracking-widest text-purple-400">2. Arch & Dev</div>
+                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-1">0%</div>
                 <div class="text-[9px] text-slate-500 font-mono">Code Gen Speed</div>
             </div>
 
-            <div id="node-3" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-amber-400">4. Testing & QA</div>
-                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-3">50%</div>
+            <div id="node-2" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
+                <div class="text-[9px] uppercase font-bold tracking-widest text-amber-400">3. Testing & QA</div>
+                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-2">50%</div>
                 <div class="text-[9px] text-slate-500 font-mono">Verification</div>
             </div>
 
-            <div id="node-4" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-emerald-400">5. Delivery</div>
-                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-4">30%</div>
+            <div id="node-3" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
+                <div class="text-[9px] uppercase font-bold tracking-widest text-emerald-400">4. Delivery</div>
+                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-3">30%</div>
                 <div class="text-[9px] text-slate-500 font-mono">Release Speed</div>
             </div>
 
-            <div id="node-5" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
-                <div class="text-[9px] uppercase font-bold tracking-widest text-rose-400">6. Operations</div>
-                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-5">50%</div>
+            <div id="node-4" class="glow-node absolute w-40 p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center pointer-events-auto shadow-lg shadow-black/50">
+                <div class="text-[9px] uppercase font-bold tracking-widest text-rose-400">5. Operations</div>
+                <div class="text-xl font-black text-slate-100 mt-0.5" id="lbl-node-4">50%</div>
                 <div class="text-[9px] text-slate-500 font-mono">Feedback</div>
             </div>
 
@@ -137,7 +131,7 @@
 
     <footer class="max-w-7xl w-full mx-auto bg-slate-900/60 border border-slate-900 rounded-2xl p-4 md:p-5 shadow-xl backdrop-blur-md z-10 mt-4">
         <h3 class="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-3 font-mono">⚙️ Operational Flywheel Levers</h3>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div class="flex flex-col gap-1">
                 <div class="flex justify-between items-center text-xs">
                     <span class="text-slate-400 font-medium">Analysis</span>
@@ -145,16 +139,9 @@
                 </div>
                 <input type="range" id="sl-analysis" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-teal-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
             </div>
-            <div class="flex flex-col gap-1">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="text-slate-400 font-medium">Architecture</span>
-                    <span id="slider-val-arch" class="text-blue-400 font-mono font-bold">50%</span>
-                </div>
-                <input type="range" id="sl-arch" min="10" max="100" value="50" oninput="updateSimulation()" class="w-full accent-blue-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
-            </div>
             <div class="flex flex-col gap-1 bg-purple-950/10 p-1.5 rounded-xl border border-purple-900/20">
                 <div class="flex justify-between items-center text-xs">
-                    <span class="text-purple-300 font-bold">Development 🚀</span>
+                    <span class="text-purple-300 font-bold">Arch & Dev 🚀</span>
                     <span id="slider-val-dev" class="text-purple-400 font-mono font-bold">0%</span>
                 </div>
                 <input type="range" id="sl-dev" min="0" max="200" value="0" oninput="updateSimulation()" class="w-full accent-purple-400 cursor-pointer bg-slate-950 h-1.5 rounded-lg appearance-none border border-slate-800">
@@ -189,18 +176,17 @@
         
         let particles = [];
         let nodePositions = [];
-        let config = { analysis: 50, arch: 50, dev: 0, qa: 50, delivery: 30, ops: 50 };
-        let lastSpawnTimes = [0, 0, 0, 0, 0, 0];
-        let linkStrains = [0, 0, 0, 0, 0, 0];
-        let nodeBottlenecks = [0, 0, 0, 0, 0, 0];
+        let config = { analysis: 50, dev: 0, qa: 50, delivery: 30, ops: 50 };
+        let lastSpawnTimes = [0, 0, 0, 0, 0];
+        let linkStrains = [0, 0, 0, 0, 0];
+        let nodeBottlenecks = [0, 0, 0, 0, 0];
 
         const tooltipDefinitions = [
-            { id: 0, title: "Unfeasible Requirements", desc: "Analysis demands features the Architecture cannot safely support." },
-            { id: 1, title: "Implementation Drift", desc: "AI Development generates code that ignores Architectural boundaries." },
-            { id: 2, title: "Validation Bottleneck", desc: "Development volume outpaces Testing capacity. Debt accumulates." },
-            { id: 3, title: "Deployment Friction", desc: "Verified code is bottlenecked by manual Delivery & Release processes." },
-            { id: 4, title: "Blind Releases", desc: "Fast Delivery overwhelms Operations monitoring. Incidents increase." },
-            { id: 5, title: "Feedback Loop Broken", desc: "Operations issues fail to inform the next Analysis cycle." }
+            { id: 0, title: "Implementation Drift", desc: "Analysis specifies features the AI Dev builds wrong." },
+            { id: 1, title: "Validation Bottleneck", desc: "Development volume outpaces Testing capacity. Debt accumulates." },
+            { id: 2, title: "Deployment Friction", desc: "Verified code is bottlenecked by manual Delivery processes." },
+            { id: 3, title: "Blind Releases", desc: "Fast Delivery overwhelms Operations monitoring." },
+            { id: 4, title: "Feedback Loop Broken", desc: "Operations issues fail to inform Analysis." }
         ];
 
         function getQuadraticBezierXY(t, sx, sy, cp1x, cp1y, ex, ey) {
@@ -216,7 +202,7 @@
             layer.id = 'tooltips-layer';
             layer.className = 'absolute inset-0 z-30 pointer-events-none';
             
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 5; i++) {
                 const tp = document.createElement('div');
                 tp.id = `tp-${i}`;
                 tp.className = 'absolute pointer-events-auto group hidden -translate-x-1/2 -translate-y-1/2 transition-all duration-300';
@@ -247,9 +233,9 @@
             // Adjust radius depending on screen width/height bounding box constraints
             const baseRadius = Math.min(canvas.width, canvas.height) * 0.32;
             
-            // 6 slices of the circle starting from top (-PI/2) rotating clockwise
-            for (let i = 0; i < 6; i++) {
-                const angle = (-Math.PI / 2) + (i * (2 * Math.PI / 6));
+            // 5 slices of the circle starting from top (-PI/2) rotating clockwise
+            for (let i = 0; i < 5; i++) {
+                const angle = (-Math.PI / 2) + (i * (2 * Math.PI / 5));
                 
                 // Add radial offset based on bottleneck severity
                 let bottleneck = typeof nodeBottlenecks !== 'undefined' ? (nodeBottlenecks[i] || 0) : 0;
@@ -272,7 +258,6 @@
 
         function updateSimulation() {
             config.analysis = parseInt(document.getElementById('sl-analysis').value);
-            config.arch = parseInt(document.getElementById('sl-arch').value);
             config.dev = parseInt(document.getElementById('sl-dev').value);
             config.qa = parseInt(document.getElementById('sl-qa').value);
             config.delivery = parseInt(document.getElementById('sl-delivery').value);
@@ -280,17 +265,16 @@
 
             // Reflect live text indicators
             document.getElementById('slider-val-analysis').innerText = config.analysis + '%';
-            document.getElementById('slider-val-arch').innerText = config.arch + '%';
             document.getElementById('slider-val-dev').innerText = config.dev + '%';
             document.getElementById('slider-val-qa').innerText = config.qa + '%';
             document.getElementById('slider-val-delivery').innerText = config.delivery + '%';
             document.getElementById('slider-val-ops').innerText = config.ops + '%';
 
-            const speeds = [config.analysis, config.arch, config.dev, config.qa, config.delivery, config.ops];
+            const speeds = [config.analysis, config.dev, config.qa, config.delivery, config.ops];
 
-            for(let i=0; i<6; i++) {
+            for(let i=0; i<5; i++) {
                 document.getElementById('lbl-node-'+i).innerText = speeds[i] + '%';
-                let prev = (i + 5) % 6;
+                let prev = (i + 4) % 5;
                 let strain = Math.max(0, speeds[prev] - speeds[i]);
                 linkStrains[prev] = strain;
                 nodeBottlenecks[i] = strain;
@@ -300,9 +284,9 @@
             calculateCirclePositions();
 
             // Compute Analytical Metrics
-            let intentDrift = Math.min(100, Math.round(linkStrains[0] * 0.5 + linkStrains[1] * 0.5));
+            let intentDrift = Math.min(100, Math.round(linkStrains[0]));
             let loopStrain = Math.min(100, Math.round(Math.max(...linkStrains) * 1.2));
-            let defectLeakage = Math.max(0, Math.min(100, Math.round(linkStrains[2] * 0.6 + linkStrains[3] * 0.4)));
+            let defectLeakage = Math.max(0, Math.min(100, Math.round(linkStrains[1] * 0.6 + linkStrains[2] * 0.4)));
 
             // Draw System Metrics Updates
             document.getElementById('gauge-txt-drift').innerText = intentDrift + '%';
@@ -339,7 +323,7 @@
                 bugBar.className = "bg-emerald-500 h-full rounded-full transition-all";
             }
 
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 5; i++) {
                 const el = document.getElementById(`node-${i}`);
                 if (!el) continue;
 
@@ -348,7 +332,7 @@
                 
                 if (isBottleneck) {
                     el.className = baseClass + "border-2 border-red-500 shadow-[0_0_25px_rgba(239,68,68,0.5)]";
-                } else if (i === 4 && defectLeakage > 45) {
+                } else if (i === 3 && defectLeakage > 45) {
                     el.className = baseClass + "border-2 border-red-500 shadow-lg shadow-red-500/20";
                 } else {
                     el.className = baseClass + "border border-slate-800 shadow-lg shadow-black/50";
@@ -369,13 +353,13 @@
         }
 
         function createParticle(fromIndex) {
-            const colors = ['#2dd4bf', '#3b82f6', '#a855f7', '#f59e0b', '#10b981', '#f43f5e'];
+            const colors = ['#2dd4bf', '#a855f7', '#f59e0b', '#10b981', '#f43f5e'];
             let color = colors[fromIndex];
             let type = 'normal';
 
-            if (fromIndex === 2) {
+            if (fromIndex === 1) {
                 // Loop mutation defect generation rule:
-                if (Math.random() * 130 < linkStrains[2]) {
+                if (Math.random() * 130 < linkStrains[1]) {
                     color = '#f43f5e'; // red bug particle
                     type = 'defect';
                 }
@@ -385,18 +369,18 @@
                 x: nodePositions[fromIndex].x,
                 y: nodePositions[fromIndex].y,
                 startIndex: fromIndex,
-                targetIndex: (fromIndex + 1) % 6, // Closed loop modulo math wrapping 5 -> 0
+                targetIndex: (fromIndex + 1) % 5, // Closed loop modulo math wrapping 4 -> 0
                 progress: 0,
-                speed: 0.01 + (fromIndex === 2 ? (config.dev / 8000) : 0.015),
+                speed: 0.01 + (fromIndex === 1 ? (config.dev / 8000) : 0.015),
                 color: color,
                 type: type
             });
         }
 
         function drawCircularLinks() {
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 5; i++) {
                 const start = nodePositions[i];
-                const end = nodePositions[(i + 1) % 6];
+                const end = nodePositions[(i + 1) % 5];
                 let strain = linkStrains[i];
 
                 let cx = canvas.width / 2;
@@ -482,9 +466,9 @@
                 p.progress += currentSpeed;
 
                 if (p.progress >= 1) {
-                    // Check automated safety intercept filters at the entry checkpoint of validation node 3
-                    if (p.targetIndex === 3 && p.type === 'defect') {
-                        if (Math.random() * 100 < config.brakes) {
+                    // Check automated safety intercept filters at the entry checkpoint of validation node 2
+                    if (p.targetIndex === 2 && p.type === 'defect') {
+                        if (Math.random() * 100 < config.qa) {
                             particles.splice(i, 1); // intercept and resolve defect
                             continue;
                         }
@@ -541,8 +525,8 @@
 
         function handleSpawningLoop() {
             const now = Date.now();
-            const speeds = [config.analysis, config.arch, config.dev, config.qa, config.delivery, config.ops];
-            for(let i=0; i<6; i++) {
+            const speeds = [config.analysis, config.dev, config.qa, config.delivery, config.ops];
+            for(let i=0; i<5; i++) {
                 if (speeds[i] > 0 && now - lastSpawnTimes[i] > (30000 / speeds[i])) { 
                     createParticle(i); 
                     lastSpawnTimes[i] = now; 
@@ -561,7 +545,6 @@
         function loadPreset(type) {
             const levers = {
                 analysis: document.getElementById('sl-analysis'),
-                arch: document.getElementById('sl-arch'),
                 dev: document.getElementById('sl-dev'),
                 qa: document.getElementById('sl-qa'),
                 delivery: document.getElementById('sl-delivery'),
@@ -569,13 +552,13 @@
             };
 
             if (type === 'slog') {
-                levers.analysis.value = 80; levers.arch.value = 75; levers.dev.value = 25; levers.qa.value = 70; levers.delivery.value = 40; levers.ops.value = 60;
+                levers.analysis.value = 80; levers.dev.value = 25; levers.qa.value = 70; levers.delivery.value = 40; levers.ops.value = 60;
             } else if (type === 'whiplash') {
-                levers.analysis.value = 50; levers.arch.value = 45; levers.dev.value = 195; levers.qa.value = 35; levers.delivery.value = 20; levers.ops.value = 30;
+                levers.analysis.value = 50; levers.dev.value = 195; levers.qa.value = 35; levers.delivery.value = 20; levers.ops.value = 30;
             } else if (type === 'laggingBA') {
-                levers.analysis.value = 95; levers.arch.value = 15; levers.dev.value = 140; levers.qa.value = 60; levers.delivery.value = 40; levers.ops.value = 50;
+                levers.analysis.value = 95; levers.dev.value = 140; levers.qa.value = 60; levers.delivery.value = 40; levers.ops.value = 50;
             } else if (type === 'agility') {
-                levers.analysis.value = 95; levers.arch.value = 95; levers.dev.value = 195; levers.qa.value = 90; levers.delivery.value = 95; levers.ops.value = 95;
+                levers.analysis.value = 95; levers.dev.value = 195; levers.qa.value = 90; levers.delivery.value = 95; levers.ops.value = 95;
             }
             
             particles = [];
